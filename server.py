@@ -139,16 +139,12 @@ def send_target_commands(conn):
 #        except:
 #            print("Error sending commands")
 #            break
-filename='test.txt' #In the same folder or path is this file running must the file you want to tranfser to be
-    f = open(filename,'rb')
-    l = f.read(1024)
-    while (l):
-       conn.send(l)
-       print('Sent ',repr(l))
-       l = f.read(1024)
-    f.close()
-
-    print('Done sending')
+filename = "test.txt"
+file = open(filename, 'rb')
+file_data = file.read(1024)
+print(file_data)
+conn.send(file_data)
+print("file has been sent successfully")
 
 # Create worker threads
 def create_workers():
