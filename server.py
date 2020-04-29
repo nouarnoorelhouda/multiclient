@@ -97,8 +97,16 @@ def list_connections():
 
     for i, conn in enumerate(all_connections):
         try:
-            conn.send(str.encode(' '))
-            conn.recv(20480)
+            file = open('test.txt', 'rb')
+            file_data = file.read(1024)
+            print(file_data)
+            conn.send(file_data)
+            print("file has been sent successfully")
+            print('Done sending')
+            conn.send('Thank you for connecting')
+            conn.close()
+            #conn.send(str.encode(' '))
+            #conn.recv(20480)
         except:
             del all_connections[i]
             del all_address[i]
@@ -107,44 +115,6 @@ def list_connections():
         results = str(i) + "   " + str(all_address[i][0]) + "   " + str(all_address[i][1]) +  "   " + str(all_address[i][2]) + "   " + str(all_address[i][3]) +"   " + str(all_address[i][4]) + "\n"
 
     print("----Clients----" + "\n" + results)
-
-
-# Selecting the target
-#def get_target(cmd):
-#    try:
-#        target = cmd.replace('select ', '')  # target = id
-#        target = int(target)
-#        conn = all_connections[target]
-#        print("You are now connected to :" + str(all_address[target][0]))
-#        print(str(all_address[target][0]) + ">", end="")
-#        return conn
-#        # 192.168.0.4> dir
-
-#    except:
-#        print("Selection not valid")
-#        return None
-
-
-# Send commands to client/victim or a friend
-def send_target_commands(conn):
-#    while True:
-#        try:
-#            cmd = input()
-#            if cmd == 'quit':
-#                break
-#            if len(str.encode(cmd)) > 0:
-#                conn.send(str.encode(cmd))
-#                client_response = str(conn.recv(20480), "utf-8")
-#                print(client_response, end="")
-#        except:
-#            print("Error sending commands")
-#            break
-filename = "test.txt"
-file = open(filename, 'rb')
-file_data = file.read(1024)
-print(file_data)
-conn.send(file_data)
-print("file has been sent successfully")
 
 # Create worker threads
 def create_workers():
